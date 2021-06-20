@@ -4,18 +4,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SaxoInterview2.Domain;
 
-namespace SaxoInterview2
+namespace SaxoInterview2.Domain
 {
-    public class CalculatorFacade
+    public class CalculatorFacade : ICalculatorFacade
     {
         /// <summary>
         /// Runs command in series and returns the output
         /// </summary>
         /// <param name="commands">Command to execute. E.g. - Add 1,2,3,4</param>
         /// <returns>Output of the command run. E.g. - 10</returns>
-        public static List<string> RunCommands(List<string> commands)
+        public List<string> RunCommands(List<string> commands)
         {
             var output = new List<string>();
 
@@ -33,6 +32,8 @@ namespace SaxoInterview2
         private static (string operation, string input) GetCommandDetails(string command)
         {
             string[] parameters = command.Split();
+            if (parameters.Length != 2)
+                throw new ArgumentException("Invalid Input");
             string operation = parameters[0];
             string input = parameters[1];
             return (operation.ToLower(), input.ToLower());
@@ -44,7 +45,7 @@ namespace SaxoInterview2
         /// </summary>
         /// <param name="commands">Command to execute. E.g. - Add 1,2,3,4</param>
         /// <returns>Output of the command run. E.g. - 10</returns>
-        public static List<string> RunCommandsParallel(List<string> commands)
+        public List<string> RunCommandsParallelly(List<string> commands)
         {
             var unorderedOutput = new Dictionary<int, string>();
             var indexedCommands = GenerateIndexedCommands(commands);
@@ -64,7 +65,7 @@ namespace SaxoInterview2
         {
             var indexedCommands = new Dictionary<int, string>();
             int index = 0;
-            foreach(var command in commands)
+            foreach (var command in commands)
             {
                 indexedCommands.Add(index++, command);
             }

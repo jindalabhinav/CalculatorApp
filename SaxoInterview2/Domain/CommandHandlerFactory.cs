@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using SaxoInterview2.Domain;
 
-namespace SaxoInterview2
+namespace SaxoInterview2.Domain
 {
     public static class CommandHandlerFactory
     {

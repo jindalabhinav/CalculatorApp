@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SaxoInterview2;
+using SaxoInterview2.Domain;
 using Xunit;
 
 namespace SaxoInterview2Tests
@@ -79,9 +79,10 @@ namespace SaxoInterview2Tests
                 "Count Addition"
             };
             List<string> output;
+            ICalculatorFacade calculator = new CalculatorFacade();
 
             //Act
-            output = CalculatorFacade.RunCommands(input);
+            output = calculator.RunCommands(input);
 
             //Assert
             Assert.Equal("15", output[0]);
@@ -101,9 +102,25 @@ namespace SaxoInterview2Tests
                 "MultiPly 1,2,3,4,5,6",
                 "InvalidOperation sum"
             };
+            ICalculatorFacade calculator = new CalculatorFacade();
 
             //Act & Assert
-            Assert.Throws<ArgumentException>(() => CalculatorFacade.RunCommands(input));
+            Assert.Throws<ArgumentException>(() => calculator.RunCommands(input));
+        }
+
+        [Fact]
+        public void ExecuteRunCommands_FailureInvalidInput_Test()
+        {
+            //Arrange
+            List<string> input = new List<string>() {
+                "Add 1,2,3,4,5",
+                "Mult 1,2,3,4,5",
+                "InvalidInput"
+            };
+            ICalculatorFacade calculator = new CalculatorFacade();
+
+            //Act & Assert
+            Assert.Throws<ArgumentException>(() => calculator.RunCommands(input));
         }
 
         [Fact]
@@ -116,9 +133,10 @@ namespace SaxoInterview2Tests
                 "MultiPly 1,2,3,4,5,6"
             };
             List<string> output;
+            ICalculatorFacade calculator = new CalculatorFacade();
 
             //Act
-            output = CalculatorFacade.RunCommandsParallel(input);
+            output = calculator.RunCommandsParallelly(input);
 
             //Assert
             Assert.Equal("15", output[0]);
