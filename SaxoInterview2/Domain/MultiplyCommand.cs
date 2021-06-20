@@ -36,14 +36,14 @@ namespace SaxoInterview2.Domain
             return output.ToString();
         }
 
-        public void Dispose()
-        {
-            this.Dispose();
-        }
-
         public int GetExecutionCount()
         {
             return count;
+        }
+
+        public void Dispose()
+        {
+            this.Dispose();
         }
     }
 }

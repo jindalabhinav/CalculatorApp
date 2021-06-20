@@ -47,17 +47,18 @@ namespace SaxoInterview2.Domain
         /// <returns>Output of the command run. E.g. - 10</returns>
         public List<string> RunCommandsParallelly(List<string> commands)
         {
-            var unorderedOutput = new Dictionary<int, string>();
-            var indexedCommands = GenerateIndexedCommands(commands);
+            var output = new List<string>();
+            var results = new List<(long, string)>();
 
-            Parallel.ForEach(indexedCommands, command =>
+            Parallel.ForEach(commands, (command, state, i) =>
             {
-                (string operation, string input) = GetCommandDetails(command.Value);
+                (string operation, string input) = GetCommandDetails(command);
                 var commandHandler = CommandHandlerFactory.Get(operation);
                 var result = commandHandler.Execute(input);
-                unorderedOutput.Add(command.Key, result);
+                results.Add((i, result));
             });
-            var output = SortUnorderedCommandResults(unorderedOutput);
+
+            output = SortUnorderedCommandResults(results);
             return output;
         }
 
@@ -72,9 +73,9 @@ namespace SaxoInterview2.Domain
             return indexedCommands;
         }
 
-        private static List<string> SortUnorderedCommandResults(Dictionary<int, string> unorderedOutput)
+        private static List<string> SortUnorderedCommandResults(List<(long, string)> unorderedOutput)
         {
-            return unorderedOutput.OrderBy(o => o.Key).Select(x => x.Value).ToList();
+            return unorderedOutput.OrderBy(o => o.Item1).Select(x => x.Item2).ToList();
         }
 
 
